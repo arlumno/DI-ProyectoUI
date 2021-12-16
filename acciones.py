@@ -27,7 +27,7 @@ class Acciones():
                 var.menu.flagDni.setStyleSheet('QLabel {color: red;}')
                 var.menu.flagDni.setText("X")
         except Exception as error:
-            print("Error: " + error)
+            print("Error al comprobar dni: " + str(error))
 
     def salir():
         try:
@@ -38,3 +38,48 @@ class Acciones():
                 var.dSalir.hide()
         except Exception as error:
             print("error s%:" % str(error))
+
+    def selSexo():
+        try:
+            if var.menu.rbFemenino.isChecked():
+                print('Marcado Femenino')
+            elif var.menu.rbMasculino.isChecked():
+                print('Marcado Masculino')
+        except Exception as error:
+            print("Error al seleccionar sexo: " + str(error))
+
+    def selPago():
+        try:
+            print('--- Pagos seleccionados: ')
+            if var.menu.chkEfectivo.isChecked():
+                print('    Efectivo')
+            if var.menu.chkTarjeta.isChecked():
+                print('    Tarjeta')
+            if var.menu.chkTransfer.isChecked():
+                print('    Transferencia')
+
+        except Exception as error:
+            print("Error al seleccionar el pago: " + str(error))
+
+    def cargarPronvincias():
+        try:
+            provincias = ['','Pontevedra','Ourense','Lugo','A Coruña']
+            for i in provincias:
+                var.menu.cbProvincia.addItem(i)
+        except Exception as error:
+            print("Error al cargar pronvincias: " + str(error))
+
+    def selProvincia(provincia):
+        try:
+            print('Provincia seleccionada: ' + provincia)
+            #return provincia # no necesario
+        except Exception as error:
+            print("Error al seleccionar la provincia: " + str(error))
+
+    def addToLog():
+        try:
+            var.dLog.etLog.setPlainText("algo")
+            #var.dLog.setPlainText(QtCore.QCoreApplication.translate("DialogLog", texto))
+            var.dLog.show()
+        except Exception as error:
+            print("Error en el Log" + str(error))
