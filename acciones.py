@@ -1,3 +1,4 @@
+import datetime
 import sys, clientes
 
 import var
@@ -43,20 +44,24 @@ class Acciones():
         try:
             if var.menu.rbFemenino.isChecked():
                 print('Marcado Femenino')
+                Acciones.addToLog('Marcado Femenino')
             elif var.menu.rbMasculino.isChecked():
                 print('Marcado Masculino')
+                Acciones.addToLog('Marcado Masculino')
         except Exception as error:
             print("Error al seleccionar sexo: " + str(error))
 
     def selPago():
         try:
-            print('--- Pagos seleccionados: ')
+            msg = '--- Pagos seleccionados: '
             if var.menu.chkEfectivo.isChecked():
-                print('    Efectivo')
+                msg += '\n    Efectivo'
             if var.menu.chkTarjeta.isChecked():
-                print('    Tarjeta')
+                msg += '\n    Tarjeta'
             if var.menu.chkTransfer.isChecked():
-                print('    Transferencia')
+                msg += '\n    Transferencia'
+            print(msg)
+            Acciones.addToLog(msg)
 
         except Exception as error:
             print("Error al seleccionar el pago: " + str(error))
@@ -76,10 +81,31 @@ class Acciones():
         except Exception as error:
             print("Error al seleccionar la provincia: " + str(error))
 
-    def addToLog():
+    def abrirCalendar():
         try:
-            var.dLog.etLog.setPlainText("algo")
-            #var.dLog.setPlainText(QtCore.QCoreApplication.translate("DialogLog", texto))
+            var.dCalendar.show()
+        except Exception as error:
+            print("Error al abrir la ventana de calendario: " + str(error))
+
+    def asignarFecha(qDate):
+        try:
+            fecha = ('{0}/{1}/{2}'.format(qDate.day(), qDate.month(), qDate.year()))
+            var.menu.etFechaAlta.setText(str(fecha))
+            var.dCalendar.hide()
+        except Exception as error:
+            print("Error al asignar fecha de alta: " + str(error))
+
+    def abrirLog():
+        try:
             var.dLog.show()
+        except Exception as error:
+            print("Error al abrir la ventana de Log: " + str(error))
+
+    def addToLog(msg):
+        try:
+            cabecera = str(datetime.datetime.now())
+            var.dLog.ui.etLog.appendPlainText("[" + cabecera +"] \n   "+ str(msg))
+            #var.dLog.setPlainText(QtCore.QCoreApplication.translate("DialogLog", texto))
+            # var.dLog.show()
         except Exception as error:
             print("Error en el Log" + str(error))

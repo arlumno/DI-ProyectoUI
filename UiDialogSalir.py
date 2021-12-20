@@ -39,5 +39,5 @@ class Ui_DialogSalir(object):
 
     def retranslateUi(self, DialogSalir):
         _translate = QtCore.QCoreApplication.translate
-        DialogSalir.setWindowTitle(_translate("DialogSalir", "Dialog"))
+        DialogSalir.setWindowTitle(_translate("DialogSalir", "Salir"))
         self.label_2.setText(_translate("DialogSalir", "¿Desea salir?"))

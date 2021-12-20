@@ -35,6 +35,8 @@ class Ui_DialogLog(object):
         self.etLog.setAccessibleDescription("")
         self.etLog.setAutoFillBackground(False)
         self.etLog.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.etLog.setDocumentTitle("")
+        self.etLog.setPlainText("")
         self.etLog.setObjectName("etLog")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
@@ -43,8 +45,4 @@ class Ui_DialogLog(object):
 
     def retranslateUi(self, DialogLog):
         _translate = QtCore.QCoreApplication.translate
-        DialogLog.setWindowTitle(_translate("DialogLog", "Dialog"))
-        self.etLog.setPlainText(_translate("DialogLog", "ejemplo\n"
-"texto\n"
-"varias lineas\n"
-"asd"))
+        DialogLog.setWindowTitle(_translate("DialogLog", "Log"))

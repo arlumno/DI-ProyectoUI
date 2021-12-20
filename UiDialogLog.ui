@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Log</string>
   </property>
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
@@ -70,11 +70,11 @@
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOn</enum>
      </property>
+     <property name="documentTitle">
+      <string/>
+     </property>
      <property name="plainText">
-      <string>ejemplo
-texto
-varias lineas
-asd</string>
+      <string/>
      </property>
     </widget>
    </widget>

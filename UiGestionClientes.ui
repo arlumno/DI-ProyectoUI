@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>382</height>
+    <width>701</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Gestion de Clientes</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">
@@ -349,13 +349,68 @@
      </rect>
     </property>
    </widget>
+   <widget class="QLineEdit" name="etFechaAlta">
+    <property name="geometry">
+     <rect>
+      <x>362</x>
+      <y>100</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>100</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Fecha de Alta:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="bCalendar">
+    <property name="geometry">
+     <rect>
+      <x>457</x>
+      <y>94</y>
+      <width>31</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>calendar.png</normaloff>calendar.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>30</width>
+      <height>30</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>700</width>
+     <width>701</width>
      <height>21</height>
     </rect>
    </property>
@@ -364,6 +419,7 @@
      <string>Archivo</string>
     </property>
     <addaction name="actionSalir"/>
+    <addaction name="actionLog"/>
    </widget>
    <addaction name="menuArchivo"/>
   </widget>
@@ -377,6 +433,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionLog">
+   <property name="text">
+    <string>Ver Log</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
    </property>
   </action>
  </widget>
