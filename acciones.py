@@ -1,6 +1,8 @@
 import datetime
 import sys, clientes
 
+from PyQt5 import QtWidgets
+
 import var
 class Acciones():
     # def ejemploPulsar():
@@ -41,25 +43,31 @@ class Acciones():
             print("error s%:" % str(error))
 
     def selSexo():
+        global sexo
         try:
             if var.menu.rbFemenino.isChecked():
                 print('Marcado Femenino')
+                sexo = "Mujer"
                 Acciones.addToLog('Marcado Femenino')
             elif var.menu.rbMasculino.isChecked():
                 print('Marcado Masculino')
+                sexo = "Hombre"
                 Acciones.addToLog('Marcado Masculino')
         except Exception as error:
             print("Error al seleccionar sexo: " + str(error))
 
     def selPago():
+        global pago
+        pago = ""
         try:
             msg = '--- Pagos seleccionados: '
             if var.menu.chkEfectivo.isChecked():
-                msg += '\n    Efectivo'
+                pago += 'Efectivo '
             if var.menu.chkTarjeta.isChecked():
-                msg += '\n    Tarjeta'
+                pago += 'Tarjeta '
             if var.menu.chkTransfer.isChecked():
-                msg += '\n    Transferencia'
+                pago += 'Transferencia '
+            msg = msg + pago
             print(msg)
             Acciones.addToLog(msg)
 
@@ -74,12 +82,10 @@ class Acciones():
         except Exception as error:
             print("Error al cargar pronvincias: " + str(error))
 
-    def selProvincia(provincia):
-        try:
-            print('Provincia seleccionada: ' + provincia)
-            #return provincia # no necesario
-        except Exception as error:
-            print("Error al seleccionar la provincia: " + str(error))
+    def selProvincia(prov):
+        global provincia
+        provincia = prov
+        print('Provincia seleccionada: ' + prov)
 
     def abrirCalendar():
         try:
@@ -109,3 +115,29 @@ class Acciones():
             # var.dLog.show()
         except Exception as error:
             print("Error en el Log" + str(error))
+
+    def showClients():
+        try:
+            clitab = []
+            client = [var.menu.etDni, var.menu.etApellido, var.menu.etNombre, var.menu.etDireccion, var.menu.etFechaAlta]
+            clitab.append(var.menu.etDni.text())
+            clitab.append(var.menu.etApellido.text())
+            clitab.append(var.menu.etNombre.text())
+            clitab.append(pago)
+            newcli = []
+            for i in client:
+                newcli.append(i.text())
+            newcli.append(provincia)
+            newcli.append(pago)
+            newcli.append(sexo)
+            print(newcli)
+            print(clitab)
+            row = 0
+            col = 0
+            var.menu.tablaDatos.insertRow(row)
+            for registro in clitab:
+                celda = QtWidgets.QTableWidgetItem(registro)
+                var.menu.tablaDatos.setItem(row,col,celda)
+                col += 1
+        except Exception as error:
+            print("Error al mostrar clientes: " + str(error))

@@ -1,11 +1,11 @@
 import sys, var
 from datetime import datetime
 
-import acciones
 from UiDialogSalir import *
 from UiGestionClientes import *
 from UiDialogLog import *
 from UiDialogCalendar import *
+import acciones
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
@@ -28,6 +28,7 @@ class Main(QtWidgets.QMainWindow):
 
         var.menu.actionSalir.triggered.connect(acciones.Acciones.salir)
         var.menu.bSalir.clicked.connect(acciones.Acciones.salir)
+        var.menu.bAceptar.clicked.connect(acciones.Acciones.showClients)
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
 
         var.menu.actionLog.triggered.connect(acciones.Acciones.abrirLog)
