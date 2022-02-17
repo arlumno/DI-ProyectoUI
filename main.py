@@ -5,7 +5,8 @@ from UiDialogSalir import *
 from UiGestionClientes import *
 from UiDialogLog import *
 from UiDialogCalendar import *
-import acciones
+from UiDialogCalendar import *
+import acciones, database
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
@@ -26,10 +27,13 @@ class Main(QtWidgets.QMainWindow):
         # acciones.Acciones.addToLog("prueba de texto 1")
         # acciones.Acciones.addToLog("prueba de texto 2")
 
+        database.Database.connect(var.fileDb);
+
         var.menu.actionSalir.triggered.connect(acciones.Acciones.salir)
         var.menu.bSalir.clicked.connect(acciones.Acciones.salir)
         var.menu.bAceptar.clicked.connect(acciones.Acciones.showClients)
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
+        database.Database.cargarClientes()
 
         var.menu.actionLog.triggered.connect(acciones.Acciones.abrirLog)
 

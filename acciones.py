@@ -3,6 +3,7 @@ import sys, clientes
 
 from PyQt5 import QtWidgets
 
+import database
 import var
 class Acciones():
     # def ejemploPulsar():
@@ -116,7 +117,7 @@ class Acciones():
         except Exception as error:
             print("Error en el Log" + str(error))
 
-    def showClients():
+    def showClients(self):
         try:
             clitab = []
             client = [var.menu.etDni, var.menu.etApellido, var.menu.etNombre, var.menu.etDireccion, var.menu.etFechaAlta]
@@ -139,5 +140,14 @@ class Acciones():
                 celda = QtWidgets.QTableWidgetItem(registro)
                 var.menu.tablaDatos.setItem(row,col,celda)
                 col += 1
+
+            if Acciones.validarCampos():
+                database.Database.guardarCliente(newcli)
+            else:
+                print("Faltan datos en el formulario")
+
         except Exception as error:
             print("Error al mostrar clientes: " + str(error))
+
+    def validarCampos():
+        return True
