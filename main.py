@@ -20,37 +20,54 @@ class Main(QtWidgets.QMainWindow):
 
         var.dSalir = DialogSalir()
         var.dCalendar = DialogCalendar()
-
         var.dLog = DialogLog()
+
         # var.dLog.show()
+        database.Database.connect(var.fileDb)
+
+        acciones.Acciones.cargarPronvincias()
+        acciones.Acciones.cargarClientes()
+        acciones.Acciones.limpiarCamposCliente()
+
 
         # acciones.Acciones.addToLog("prueba de texto 1")
         # acciones.Acciones.addToLog("prueba de texto 2")
 
-        database.Database.connect(var.fileDb);
+        ### EVENTOS ###
+        var.menu.cbProvincia.activated[str].connect(acciones.Acciones.selProvincia)
+
+        # var.menu.tablaDatos.selectionModel().selectionChanged.connect(acciones.Acciones.modificarCliente)
+        var.menu.tablaDatos.doubleClicked.connect(acciones.Acciones.abrirClienteSeleccionado)
+        # print(var.menu.tablaDatos.selectedIndexes())
 
         var.menu.actionSalir.triggered.connect(acciones.Acciones.salir)
         var.menu.bSalir.clicked.connect(acciones.Acciones.salir)
-        var.menu.bAceptar.clicked.connect(acciones.Acciones.showClients)
+        #var.menu.bAceptar.clicked.connect(acciones.Acciones.showClients)
+
+        var.menu.bCargarClientes.clicked.connect(acciones.Acciones.cargarClientes)
+        var.menu.bFiltrarClientes.clicked.connect(acciones.Acciones.filtrarClientes)
+        var.menu.bLimpiarClientes.clicked.connect(acciones.Acciones.limpiarListadoClientes)
+
+        var.menu.bEliminarClienteSeleccionado.clicked.connect(acciones.Acciones.eliminarClienteSeleccionado)
+        var.menu.bEliminarCliente.clicked.connect(acciones.Acciones.eliminarCliente)
+        var.menu.bModificarCliente.clicked.connect(acciones.Acciones.abrirClienteSeleccionado)
+        var.menu.bGuardarCambios.clicked.connect(acciones.Acciones.guardarCambiosCliente)
+        var.menu.bGrabarCliente.clicked.connect(acciones.Acciones.grabarCliente)
+        var.menu.bLimpiarCampos.clicked.connect(acciones.Acciones.limpiarCamposCliente)
+
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
-        database.Database.cargarClientes()
 
         var.menu.actionLog.triggered.connect(acciones.Acciones.abrirLog)
 
         var.menu.rbgSexo.buttonClicked.connect(acciones.Acciones.selSexo)
-        #var.menu.rbFemenino.toggled.connect(acciones.Acciones.selSexo)
-        #var.menu.rbMasculino.toggled.connect(acciones.Acciones.selSexo)
+        # var.menu.rbFemenino.toggled.connect(acciones.Acciones.selSexo)
+        # var.menu.rbMasculino.toggled.connect(acciones.Acciones.selSexo)
 
         var.menu.chkEfectivo.stateChanged.connect(acciones.Acciones.selPago)
         var.menu.chkTarjeta.stateChanged.connect(acciones.Acciones.selPago)
         var.menu.chkTransfer.stateChanged.connect(acciones.Acciones.selPago)
 
-        acciones.Acciones.cargarPronvincias()
-        var.menu.cbProvincia.activated[str].connect(acciones.Acciones.selProvincia)
-
         var.menu.bCalendar.clicked.connect(acciones.Acciones.abrirCalendar)
-
-
 
 
 class DialogSalir(QtWidgets.QDialog):
