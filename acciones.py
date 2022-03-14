@@ -1,3 +1,7 @@
+import os.path
+import shutil
+import zipfile
+
 from numpy.core.multiarray import result_type
 
 import clientes
@@ -64,7 +68,7 @@ class Acciones():
         except Exception as error:
             print("Error al seleccionar el pago: " + str(error))
 
-    def cargarPronvincias():
+    def cargarProvincias():
         try:
             # provincias = ['','Pontevedra','Ourense','Lugo','A Coruña']
             database.Database.cargarProvincias()
@@ -127,12 +131,12 @@ class Acciones():
                     if not Acciones.isClientecargado():
                         database.Database.guardarCliente(nuevoCliente)
                         Acciones.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
-
+                        Acciones.anunciarStatusBar("Cliente con dni "+ nuevoCliente[0]+ " grabado con éxito")
                     else:
                         if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente",str(nuevoCliente)):
                             database.Database.modificarCliente(nuevoCliente)
                             Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
-
+                            Acciones.anunciarStatusBar("Cliente con dni " + nuevoCliente[0] + " modificado con éxito")
 
                     Acciones.cargarClientes()
                 else:
@@ -144,7 +148,6 @@ class Acciones():
     def guardarCambiosCliente():
         try:
             if Acciones.validarCampos():
-                #dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo
                 clienteModificado = [var.menu.etDni.text(),
                                 var.menu.etApellido.text(),
                                 var.menu.etNombre.text(),
@@ -157,12 +160,11 @@ class Acciones():
                 database.Database.cargarCliente(clienteModificado[0])
                 if Acciones.isClientecargado():
                     if clienteModificado != var.clienteCargado:
-                        # print(clienteModificado)
-                        # print(var.clienteCargado)
                         if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente", str(clienteModificado)):
                             database.Database.modificarCliente(clienteModificado)
                             Acciones.cargarClientes()
                             Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+                            Acciones.anunciarStatusBar("Cliente con dni " + clienteModificado[0] + " modificado con éxito")
 
                     else:
                         Acciones.ventanaAdvertencia("No hay cambios")
@@ -185,6 +187,7 @@ class Acciones():
                     var.menu.tablaDatos.setItem(row, col, celda)
                     col += 1
                 row += 1
+            Acciones.anunciarStatusBar("Lista de clientes cargada con éxito")
 
     def cargarClientes():
         database.Database.cargarClientes()
@@ -218,6 +221,7 @@ class Acciones():
     def eliminarCliente():
         if Acciones.ventanaConfirmacion("Confirma Eliminar el Cliente:","Eliminar Cliente", str(var.clienteCargado)):
             database.Database.eliminarCliente(var.clienteCargado[0])
+            Acciones.anunciarStatusBar("Clientes con dni "+var.clienteCargado[0]+ " Eliminado")
             Acciones.limpiarCamposCliente()
             Acciones.cargarClientes()
 
@@ -321,8 +325,6 @@ class Acciones():
             errores += "\n  Sin seleccionar: Sexo"
             resultado = False
 
-        # print("Validación de campos: " + str(resultado))
-
         if not resultado:
             Acciones.ventanaAdvertencia("Operación no realizada. Faltan datos.\n Debe rellenar todos los campos.", "Error en los camplos", errores)
 
@@ -337,7 +339,7 @@ class Acciones():
         if descripcionExtendida != "":
             msg.setDetailedText(descripcionExtendida)
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        if  msg.exec_() == QMessageBox.Ok:
+        if msg.exec_() == QMessageBox.Ok:
             return True
         else:
             return False
@@ -352,3 +354,30 @@ class Acciones():
         msg.setDetailedText(descripcion)
         msg.setStandardButtons(QMessageBox.Ok)
         msg.exec_()
+
+    def anunciarStatusBar(msg):
+        var.menu.lbStatus.setText(msg)
+        Acciones.addToLog(msg)
+
+    def abrirCarpeta():
+        try:
+            var.dFileOpen.show()
+        except Exception as error:
+            print("Error al abrir el explorador: " + str(error))
+
+    def descargarBd():
+        try:
+            fecha = datetime.datetime.today();
+            fecha = fecha.strftime('%Y.%m.%d.%H.%M.%S')
+            archivoSalida = str(fecha) + '_backup.zip'
+            option = QtWidgets.QFileDialog.Options()
+            directorio, archivo = var.dFileOpen.getSaveFileName(None,"Descargar Copia",archivoSalida, '.zip', options=option)
+            if var.dFileOpen.Accepted and archivo != '':
+                archivoZip = zipfile.ZipFile(archivoSalida,'w')
+                archivoZip.write(var.fileDb, os.path.basename(var.fileDb),zipfile.ZIP_DEFLATED)
+                archivoZip.close()
+                Acciones.anunciarStatusBar("Base de datos descargada con éxito")
+                shutil.move(str(archivoSalida),str(directorio))
+
+        except Exception as error:
+            print("Error al descargar la base de datos: " + str(error))

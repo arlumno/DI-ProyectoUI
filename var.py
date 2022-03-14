@@ -2,6 +2,7 @@ global menu
 global dSalir
 global dLog
 global dCalendar
+global dFileOpen
 global fileDb
 global listadoClientes
 global listadoProvincias

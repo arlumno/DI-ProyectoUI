@@ -21,15 +21,16 @@ class Main(QtWidgets.QMainWindow):
         var.dSalir = DialogSalir()
         var.dCalendar = DialogCalendar()
         var.dLog = DialogLog()
+        var.dFileOpen = FileDialogAbrir()
 
         # var.dLog.show()
         database.Database.connect(var.fileDb)
 
-        acciones.Acciones.cargarPronvincias()
+        acciones.Acciones.cargarProvincias()
         acciones.Acciones.cargarClientes()
         acciones.Acciones.limpiarCamposCliente()
-
-
+        var.menu.statusbar.addPermanentWidget(var.menu.lbStatus,1)
+        var.menu.lbStatus.setText("Bienvenido a 2º DAM - Adultos")
         # acciones.Acciones.addToLog("prueba de texto 1")
         # acciones.Acciones.addToLog("prueba de texto 2")
 
@@ -60,6 +61,8 @@ class Main(QtWidgets.QMainWindow):
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
 
         var.menu.actionLog.triggered.connect(acciones.Acciones.abrirLog)
+        var.menu.actionAbrirCarpeta.triggered.connect(acciones.Acciones.abrirCarpeta)
+        var.menu.actionDescargarBd.triggered.connect(acciones.Acciones.descargarBd)
 
         var.menu.rbgSexo.buttonClicked.connect(acciones.Acciones.selSexo)
         # var.menu.rbFemenino.toggled.connect(acciones.Acciones.selSexo)
@@ -96,6 +99,10 @@ class DialogLog(QtWidgets.QDialog):
         self.ui = Ui_DialogLog()
         self.ui.setupUi(self)
 
+class FileDialogAbrir(QtWidgets.QFileDialog):
+    def __init__(self):
+        super(FileDialogAbrir, self).__init__()
+    
 if __name__ == '__main__':
     app = QtWidgets.QApplication([])
     wMain = Main()

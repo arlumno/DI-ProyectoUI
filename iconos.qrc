@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="iconos">
+    <file>download.png</file>
+    <file>folder.png</file>
+    <file>alert-icon-1563.jpg</file>
+    <file>calendar.png</file>
+    <file>clean.png</file>
+    <file>clear.png</file>
+    <file>exit.png</file>
+    <file>log.png</file>
+    <file>read.png</file>
+    <file>reload.png</file>
+    <file>search.png</file>
+  </qresource>
+</RCC>

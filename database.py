@@ -76,8 +76,8 @@ class Database():
                 q.bindValue(":dni", dni)
 
                 if q.exec_():
-                    acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + "se ha eliminado con éxito")
-                    acciones.Acciones.descargarCliente()
+                    acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + " se ha eliminado con éxito")
+                    # acciones.Acciones.descargarCliente()
                 else:
                     print("Error al eliminar cliente: ", q.lastError().text())
             else:
