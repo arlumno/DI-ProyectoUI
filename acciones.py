@@ -109,7 +109,7 @@ class Acciones():
             print("Error en el Log" + str(error))
 
 
-    def grabarCliente():
+    def grabarNuevoCliente():
             try:
                 if Acciones.validarCampos():
                     nuevoCliente = [var.menu.etDni.text(),
@@ -122,16 +122,17 @@ class Acciones():
                                     var.sexo]
 
                     # print(nuevoCliente)
-                    database.Database.cargarCliente(nuevoCliente[1])
+                    database.Database.cargarCliente(nuevoCliente[0])
 
                     if not Acciones.isClientecargado():
-                        print("guardando cliente...")
                         database.Database.guardarCliente(nuevoCliente)
-                        # print("cliente nuevo guardado")
+                        Acciones.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
+
                     else:
-                        print("modificando cliente...")
-                        database.Database.modificarCliente(nuevoCliente)
-                        # print("cliente modificado")
+                        if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente",str(nuevoCliente)):
+                            database.Database.modificarCliente(nuevoCliente)
+                            Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+
 
                     Acciones.cargarClientes()
                 else:
@@ -156,11 +157,13 @@ class Acciones():
                 database.Database.cargarCliente(clienteModificado[0])
                 if Acciones.isClientecargado():
                     if clienteModificado != var.clienteCargado:
-                        print(clienteModificado)
-                        print(var.clienteCargado)
+                        # print(clienteModificado)
+                        # print(var.clienteCargado)
                         if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente", str(clienteModificado)):
                             database.Database.modificarCliente(clienteModificado)
                             Acciones.cargarClientes()
+                            Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+
                     else:
                         Acciones.ventanaAdvertencia("No hay cambios")
 
@@ -190,13 +193,13 @@ class Acciones():
     def cargarCliente(cliente):
         var.menu.bEliminarCliente.setVisible(True)
         var.menu.bGuardarCambios.setVisible(True)
-        var.menu.bGrabarCliente.setVisible(False)
+        var.menu.bNuevoCliente.setVisible(False)
         var.clienteCargado = cliente
 
     def descargarCliente():
         var.menu.bEliminarCliente.setVisible(False)
         var.menu.bGuardarCambios.setVisible(False)
-        var.menu.bGrabarCliente.setVisible(True)
+        var.menu.bNuevoCliente.setVisible(True)
         var.clienteCargado = []
 
     def isClientecargado():
@@ -269,6 +272,7 @@ class Acciones():
         var.menu.etNombre.setText("")
         var.menu.etDireccion.setText("")
         var.menu.etFechaAlta.setText("")
+        var.menu.flagDni.setText("")
         var.menu.cbProvincia.setCurrentText("")
 
         var.menu.rbgSexo.setExclusive(False)

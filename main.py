@@ -46,13 +46,15 @@ class Main(QtWidgets.QMainWindow):
 
         var.menu.bCargarClientes.clicked.connect(acciones.Acciones.cargarClientes)
         var.menu.bFiltrarClientes.clicked.connect(acciones.Acciones.filtrarClientes)
+        var.menu.etFiltro.editingFinished.connect(acciones.Acciones.filtrarClientes)
+
         var.menu.bLimpiarClientes.clicked.connect(acciones.Acciones.limpiarListadoClientes)
 
         var.menu.bEliminarClienteSeleccionado.clicked.connect(acciones.Acciones.eliminarClienteSeleccionado)
         var.menu.bEliminarCliente.clicked.connect(acciones.Acciones.eliminarCliente)
         var.menu.bModificarCliente.clicked.connect(acciones.Acciones.abrirClienteSeleccionado)
         var.menu.bGuardarCambios.clicked.connect(acciones.Acciones.guardarCambiosCliente)
-        var.menu.bGrabarCliente.clicked.connect(acciones.Acciones.grabarCliente)
+        var.menu.bNuevoCliente.clicked.connect(acciones.Acciones.grabarNuevoCliente)
         var.menu.bLimpiarCampos.clicked.connect(acciones.Acciones.limpiarCamposCliente)
 
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)

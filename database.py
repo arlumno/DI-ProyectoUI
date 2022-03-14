@@ -29,7 +29,7 @@ class Database():
             q.bindValue(":sexo",  str(cliente[7]))
 
             if q.exec_():
-                print("El cliente se ha guardado con éxito")
+                acciones.Acciones.ventanaAdvertencia("El cliente se ha guardado con éxito")
             else:
                 print("Error al guardar cliente: ", q.lastError().text())
 
@@ -50,7 +50,7 @@ class Database():
             q.bindValue(":sexo", str(cliente[7]))
 
             if q.exec_():
-                print("El cliente se ha modificado con éxito")
+                acciones.Acciones.ventanaAdvertencia("El cliente se ha modificado con éxito")
             else:
                 print("Error al modificar cliente: ", q.lastError().text())
 
@@ -76,13 +76,12 @@ class Database():
                 q.bindValue(":dni", dni)
 
                 if q.exec_():
-                    print("dni a eliminar: "  + dni)
-                    print("El cliente se ha eliminado con éxito")
+                    acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + "se ha eliminado con éxito")
                     acciones.Acciones.descargarCliente()
                 else:
                     print("Error al eliminar cliente: ", q.lastError().text())
             else:
-                print("El cliente que se intenta borrar no Existe")
+                acciones.Acciones.ventanaAdvertencia("El cliente que se intenta borrar no Existe")
 
         def cargarClientes():
             q = QtSql.QSqlQuery()
@@ -105,10 +104,8 @@ class Database():
             else:
                 print("Error al cargar provincias: ", q.lastError().text())
 
-            print(var.listadoProvincias)
 
         def filtrarClientes(filtro):
-            print("Filtro: " + filtro)
             q = QtSql.QSqlQuery()
 
             # q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes WHERE nombre = :filtro")
