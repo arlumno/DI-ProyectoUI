@@ -24,13 +24,14 @@ class Main(QtWidgets.QMainWindow):
         var.dFileOpen = FileDialogAbrir()
 
         # var.dLog.show()
-        database.Database.connect(var.fileDb)
+        database.Database.connect()
 
         acciones.Acciones.cargarProvincias()
         acciones.Acciones.cargarClientes()
         acciones.Acciones.limpiarCamposCliente()
         var.menu.statusbar.addPermanentWidget(var.menu.lbStatus,1)
-        var.menu.lbStatus.setText("Bienvenido a 2º DAM - Adultos")
+        acciones.Acciones.anunciarStatusBar("Bienvenido a 2º DAM - Adultos")
+
         # acciones.Acciones.addToLog("prueba de texto 1")
         # acciones.Acciones.addToLog("prueba de texto 2")
 
@@ -40,17 +41,12 @@ class Main(QtWidgets.QMainWindow):
         # var.menu.tablaDatos.selectionModel().selectionChanged.connect(acciones.Acciones.modificarCliente)
         var.menu.tablaDatos.doubleClicked.connect(acciones.Acciones.abrirClienteSeleccionado)
         # print(var.menu.tablaDatos.selectedIndexes())
-
-        var.menu.actionSalir.triggered.connect(acciones.Acciones.salir)
+        #Botones
         var.menu.bSalir.clicked.connect(acciones.Acciones.salir)
-        #var.menu.bAceptar.clicked.connect(acciones.Acciones.showClients)
-
         var.menu.bCargarClientes.clicked.connect(acciones.Acciones.cargarClientes)
         var.menu.bFiltrarClientes.clicked.connect(acciones.Acciones.filtrarClientes)
         var.menu.etFiltro.editingFinished.connect(acciones.Acciones.filtrarClientes)
-
         var.menu.bLimpiarClientes.clicked.connect(acciones.Acciones.limpiarListadoClientes)
-
         var.menu.bEliminarClienteSeleccionado.clicked.connect(acciones.Acciones.eliminarClienteSeleccionado)
         var.menu.bEliminarCliente.clicked.connect(acciones.Acciones.eliminarCliente)
         var.menu.bModificarCliente.clicked.connect(acciones.Acciones.abrirClienteSeleccionado)
@@ -60,14 +56,21 @@ class Main(QtWidgets.QMainWindow):
 
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
 
+
+
+        #Actions menú
+        var.menu.actionSalir.triggered.connect(acciones.Acciones.salir)
         var.menu.actionLog.triggered.connect(acciones.Acciones.abrirLog)
         var.menu.actionAbrirCarpeta.triggered.connect(acciones.Acciones.abrirCarpeta)
         var.menu.actionDescargarBd.triggered.connect(acciones.Acciones.descargarBd)
+        var.menu.actionRestaurarBD.triggered.connect(acciones.Acciones.restaurarBd)
+        var.menu.actionBorrarBD.triggered.connect(acciones.Acciones.borrarBd)
+        var.menu.actionImportar_Datos.triggered.connect(acciones.Acciones.importarDatos)
 
+        #radiobuttons y checkboxs
         var.menu.rbgSexo.buttonClicked.connect(acciones.Acciones.selSexo)
         # var.menu.rbFemenino.toggled.connect(acciones.Acciones.selSexo)
         # var.menu.rbMasculino.toggled.connect(acciones.Acciones.selSexo)
-
         var.menu.chkEfectivo.stateChanged.connect(acciones.Acciones.selPago)
         var.menu.chkTarjeta.stateChanged.connect(acciones.Acciones.selPago)
         var.menu.chkTransfer.stateChanged.connect(acciones.Acciones.selPago)

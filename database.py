@@ -3,15 +3,21 @@ from PyQt5 import QtWidgets, QtSql
 import acciones
 import var
 class Database():
-        def connect(fileDb):
-            db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
-            db.setDatabaseName(fileDb)
-            if not db.open():
+        def connect():
+            var.db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
+            var.db.setDatabaseName(var.fileDb)
+            if not var.db.open():
                 QtWidgets.QMessageBox.critical(None, "No se puede abrir la base ded datos", 'No se puede establecer conexión.', QtWidgets.QMessageBox.Cancel)
                 return False
             else:
                 print("Conexión realizada con éxito")
             return True
+
+        def disconnect():
+            var.db.close()
+            # del var.db
+            # QtSql.QSqlDatabase.removeDatabase(var.fileDb)
+            print("Base de datos desconectada.")
 
         def guardarCliente(cliente):
             q = QtSql.QSqlQuery()

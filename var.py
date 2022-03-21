@@ -9,6 +9,8 @@ global listadoProvincias
 global clienteCargado
 global pago
 global sexo
+global db
+db = None
 pago = ""
 sexo = ""
 clienteCargado = [str]

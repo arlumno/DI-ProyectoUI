@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>888</width>
+    <width>900</width>
     <height>700</height>
    </rect>
   </property>
@@ -18,13 +18,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>888</width>
+    <width>900</width>
     <height>700</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>888</width>
+    <width>900</width>
     <height>700</height>
    </size>
   </property>
@@ -37,7 +37,7 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>871</width>
+      <width>881</width>
       <height>651</height>
      </rect>
     </property>
@@ -105,7 +105,7 @@
      <widget class="QLabel" name="label_9">
       <property name="geometry">
        <rect>
-        <x>610</x>
+        <x>620</x>
         <y>126</y>
         <width>81</width>
         <height>16</height>
@@ -226,7 +226,7 @@
      <widget class="QLineEdit" name="etNombre">
       <property name="geometry">
        <rect>
-        <x>620</x>
+        <x>630</x>
         <y>90</y>
         <width>211</width>
         <height>20</height>
@@ -322,7 +322,7 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>560</x>
+        <x>570</x>
         <y>92</y>
         <width>61</width>
         <height>16</height>
@@ -360,7 +360,7 @@
      <widget class="QPushButton" name="bCalendar">
       <property name="geometry">
        <rect>
-        <x>800</x>
+        <x>810</x>
         <y>120</y>
         <width>31</width>
         <height>31</height>
@@ -383,7 +383,7 @@
      <widget class="QLineEdit" name="etFechaAlta">
       <property name="geometry">
        <rect>
-        <x>700</x>
+        <x>710</x>
         <y>124</y>
         <width>91</width>
         <height>20</height>
@@ -451,9 +451,9 @@
      <widget class="QTableWidget" name="tablaDatos">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>20</x>
         <y>290</y>
-        <width>811</width>
+        <width>841</width>
         <height>271</height>
        </rect>
       </property>
@@ -504,7 +504,7 @@
      <widget class="QPushButton" name="bFiltrarClientes">
       <property name="geometry">
        <rect>
-        <x>810</x>
+        <x>820</x>
         <y>248</y>
         <width>29</width>
         <height>31</height>
@@ -533,7 +533,7 @@
      <widget class="QLineEdit" name="etFiltro">
       <property name="geometry">
        <rect>
-        <x>640</x>
+        <x>650</x>
         <y>258</y>
         <width>161</width>
         <height>20</height>
@@ -572,7 +572,7 @@
      <widget class="QPushButton" name="bNuevoCliente">
       <property name="geometry">
        <rect>
-        <x>710</x>
+        <x>720</x>
         <y>192</y>
         <width>80</width>
         <height>31</height>
@@ -650,7 +650,7 @@ font-weight: bold</string>
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>470</x>
+        <x>480</x>
         <y>258</y>
         <width>171</width>
         <height>20</height>
@@ -669,7 +669,7 @@ font-weight: bold</string>
      <widget class="QPushButton" name="bLimpiarCampos">
       <property name="geometry">
        <rect>
-        <x>800</x>
+        <x>810</x>
         <y>192</y>
         <width>31</width>
         <height>30</height>
@@ -805,7 +805,7 @@ font-weight: bold</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>888</width>
+     <width>900</width>
      <height>21</height>
     </rect>
    </property>
@@ -813,10 +813,24 @@ font-weight: bold</string>
     <property name="title">
      <string>Archivo</string>
     </property>
+    <addaction name="actionAbrirCarpeta"/>
+    <addaction name="separator"/>
     <addaction name="actionSalir"/>
     <addaction name="actionLog"/>
    </widget>
+   <widget class="QMenu" name="menuHerramientas">
+    <property name="title">
+     <string>Herramientas</string>
+    </property>
+    <addaction name="actionImportar_Datos"/>
+    <addaction name="separator"/>
+    <addaction name="actionDescargarBd"/>
+    <addaction name="actionRestaurarBD"/>
+    <addaction name="separator"/>
+    <addaction name="actionBorrarBD"/>
+   </widget>
    <addaction name="menuArchivo"/>
+   <addaction name="menuHerramientas"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -867,7 +881,7 @@ font-weight: bold</string>
      <normaloff>:/iconos/folder.png</normaloff>:/iconos/folder.png</iconset>
    </property>
    <property name="text">
-    <string>AbrirCarpeta</string>
+    <string>Abrir</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+A</string>
@@ -879,10 +893,28 @@ font-weight: bold</string>
      <normaloff>:/iconos/download.png</normaloff>:/iconos/download.png</iconset>
    </property>
    <property name="text">
-    <string>DescargarBd</string>
+    <string>Descargar Bd</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionImportar_Datos">
+   <property name="text">
+    <string>Importar Datos</string>
+   </property>
+  </action>
+  <action name="actionRestaurarBD">
+   <property name="text">
+    <string>Restaurar BD</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionBorrarBD">
+   <property name="text">
+    <string>Borrar BD</string>
    </property>
   </action>
  </widget>

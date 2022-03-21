@@ -1,8 +1,7 @@
 import os.path
 import shutil
 import zipfile
-
-from numpy.core.multiarray import result_type
+import xlrd
 
 import clientes
 import datetime
@@ -105,10 +104,7 @@ class Acciones():
 
     def addToLog(msg):
         try:
-            cabecera = str(datetime.datetime.now())
-            var.dLog.ui.etLog.appendPlainText("[" + cabecera +"] \n   "+ str(msg))
-            #var.dLog.setPlainText(QtCore.QCoreApplication.translate("DialogLog", texto))
-            # var.dLog.show()
+            var.dLog.ui.etLog.appendPlainText("[" + Acciones.fechaActual("%H:%M:%S %d/%m/%Y") +"] \n   "+ str(msg))
         except Exception as error:
             print("Error en el Log" + str(error))
 
@@ -190,6 +186,7 @@ class Acciones():
             Acciones.anunciarStatusBar("Lista de clientes cargada con éxito")
 
     def cargarClientes():
+        Acciones.limpiarCamposCliente()
         database.Database.cargarClientes()
         Acciones.cargarListaClientes()
 
@@ -356,20 +353,19 @@ class Acciones():
         msg.exec_()
 
     def anunciarStatusBar(msg):
-        var.menu.lbStatus.setText(msg)
+
+        var.menu.lbStatus.setText("["+ Acciones.fechaActual() + "]"+msg)
         Acciones.addToLog(msg)
 
     def abrirCarpeta():
         try:
-            var.dFileOpen.show()
+            return var.dFileOpen.show()
         except Exception as error:
             print("Error al abrir el explorador: " + str(error))
 
     def descargarBd():
         try:
-            fecha = datetime.datetime.today();
-            fecha = fecha.strftime('%Y.%m.%d.%H.%M.%S')
-            archivoSalida = str(fecha) + '_backup.zip'
+            archivoSalida = str(Acciones.fechaActual('%Y.%m.%d.%H.%M.%S')) + '_backup.zip'
             option = QtWidgets.QFileDialog.Options()
             directorio, archivo = var.dFileOpen.getSaveFileName(None,"Descargar Copia",archivoSalida, '.zip', options=option)
             if var.dFileOpen.Accepted and archivo != '':
@@ -381,3 +377,59 @@ class Acciones():
 
         except Exception as error:
             print("Error al descargar la base de datos: " + str(error))
+
+    def restaurarBd():
+        try:
+            dirName, fileName = var.dFileOpen.getOpenFileName(None,None,None,"*.zip *.ZIP",)
+
+            if dirName and Acciones.ventanaConfirmacion("Estas seguro de restaurar la BD","¡Atención!",None,dirName):
+                archivoZip = zipfile.ZipFile(dirName, 'r')
+
+                database.Database.disconnect()  #desconectamos para poder renombrar la base de datos actual
+                os.replace(var.fileDb, var.fileDb + "_last") #le cambiamos el nombre y la dejamos como copia de seguridad
+
+                try:
+                    archivoZip.extract(var.fileDb) #extraemos la base de datos del archivo zip.
+                    Acciones.anunciarStatusBar("Base de datos restaurada")
+                    Acciones.cargarListaClientes()
+                    Acciones.ventanaAdvertencia("Base de datos restaurada con éxito.")
+                except Exception as error: #si da error, deshacemos el cambio.
+                    os.replace(var.fileDb + "_last", var.fileDb)  # le cambiamos el nombre y la dejamos como copia de seguridad
+                    Acciones.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
+
+                database.Database.connect() #conectamos de nuevo la bd.
+                Acciones.cargarClientes()
+
+
+        except Exception as error:
+            Acciones.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
+
+    def borrarBd():
+        if Acciones.ventanaConfirmacion("¿Estas seguro de Borrar toda la Base De Datos?", "¡Atención!"):
+
+            try:
+                database.Database.disconnect()
+                os.remove(var.fileDb)
+                Acciones.ventanaAdvertencia("Base de datos BORRADA")
+                Acciones.anunciarStatusBar("Base de datos eliminada")
+            except Exception as error:
+                Acciones.ventanaAdvertencia("Error al Borrar la Base de datos", "error", str(error))
+
+            database.Database.connect()  # conectamos de nuevo la bd
+            Acciones.cargarClientes()
+
+    def importarDatos():
+        try:
+            dirName, fileName = var.dFileOpen.getOpenFileName(None, None, None, "*.xls *.XLS", )
+
+            if dirName and Acciones.ventanaConfirmacion("Estas seguro de importar los datos la BD", "¡Atención!", None, dirName):
+                archivoXls = xlrd.open_workbook(dirName)
+                hoja1 = archivoXls.sheet_by_index(0)
+
+        except Exception as error:
+            Acciones.ventanaAdvertencia("No se han podido importar los datos", "error", str(error))
+
+    def fechaActual(format= "%d/%m/%Y"):
+        fecha = datetime.datetime.today()
+        fecha = fecha.strftime(format)
+        return str(fecha)
