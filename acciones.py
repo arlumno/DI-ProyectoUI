@@ -1,6 +1,8 @@
 import os.path
 import shutil
 import zipfile
+from pydoc import cli
+
 import xlrd
 
 import clientes
@@ -122,18 +124,24 @@ class Acciones():
                                     var.sexo]
 
                     # print(nuevoCliente)
-                    database.Database.cargarCliente(nuevoCliente[0])
+
+                    clienteBd = database.Database.obtenerCliente(nuevoCliente[0])
+                    if clienteBd is not None:
+                        Acciones.cargarCliente(clienteBd)
 
                     if not Acciones.isClientecargado():
-                        database.Database.guardarCliente(nuevoCliente)
-                        Acciones.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
-                        Acciones.anunciarStatusBar("Cliente con dni "+ nuevoCliente[0]+ " grabado con éxito")
+                        if database.Database.guardarCliente(nuevoCliente) :
+                            Acciones.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
+                            Acciones.anunciarStatusBar("Cliente con dni "+ nuevoCliente[0]+ " grabado con éxito")
+                        else:
+                            Acciones.ventanaAdvertencia("Error al guardar el cliente.")
                     else:
                         if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente",str(nuevoCliente)):
-                            database.Database.modificarCliente(nuevoCliente)
-                            Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
-                            Acciones.anunciarStatusBar("Cliente con dni " + nuevoCliente[0] + " modificado con éxito")
-
+                            if database.Database.modificarCliente(nuevoCliente):
+                                Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+                                Acciones.anunciarStatusBar("Cliente con dni " + nuevoCliente[0] + " modificado con éxito")
+                            else:
+                             Acciones.ventanaAdvertencia("Error al modificar el cliente.")
                     Acciones.cargarClientes()
                 else:
                     print("Operación no realizada, Faltan datos.")
@@ -153,7 +161,10 @@ class Acciones():
                                 var.sexo,
                                 var.menu.etFechaAlta.text()]
 
-                database.Database.cargarCliente(clienteModificado[0])
+                clienteBd = database.Database.obtenerCliente(clienteModificado[0])
+                if clienteBd is not None:
+                    Acciones.cargarCliente(clienteBd)
+
                 if Acciones.isClientecargado():
                     if clienteModificado != var.clienteCargado:
                         if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente", str(clienteModificado)):
@@ -183,7 +194,7 @@ class Acciones():
                     var.menu.tablaDatos.setItem(row, col, celda)
                     col += 1
                 row += 1
-            Acciones.anunciarStatusBar("Lista de clientes cargada con éxito")
+            # Acciones.anunciarStatusBar("Lista de clientes cargada con éxito")
 
     def cargarClientes():
         Acciones.limpiarCamposCliente()
@@ -217,8 +228,17 @@ class Acciones():
 
     def eliminarCliente():
         if Acciones.ventanaConfirmacion("Confirma Eliminar el Cliente:","Eliminar Cliente", str(var.clienteCargado)):
-            database.Database.eliminarCliente(var.clienteCargado[0])
-            Acciones.anunciarStatusBar("Clientes con dni "+var.clienteCargado[0]+ " Eliminado")
+            if database.Database.eliminarCliente(var.clienteCargado[0]):
+                Acciones.anunciarStatusBar("Clientes con dni "+var.clienteCargado[0]+ " Eliminado")
+            else:
+                Acciones.ventanaAdvertencia("Error al eliminar el cliente con dni: " + var.clienteCargado[0])
+                database.Database.eliminarCliente(var.clienteCargado[0])
+            Acciones.limpiarCamposCliente()
+            Acciones.cargarClientes()
+
+    def importarListadoClientes(listadoClientesImportar):
+        if Acciones.ventanaConfirmacion("Hay un total de " + str(len(listadoClientesImportar)) + " clientes para importar. Los clientes existentes se actualizarán. \n¿Está seguro?", "Importar Clientes", None, str(listadoClientesImportar)):
+            database.Database.importarListadoClientes(listadoClientesImportar)
             Acciones.limpiarCamposCliente()
             Acciones.cargarClientes()
 
@@ -421,10 +441,49 @@ class Acciones():
     def importarDatos():
         try:
             dirName, fileName = var.dFileOpen.getOpenFileName(None, None, None, "*.xls *.XLS", )
-
-            if dirName and Acciones.ventanaConfirmacion("Estas seguro de importar los datos la BD", "¡Atención!", None, dirName):
-                archivoXls = xlrd.open_workbook(dirName)
-                hoja1 = archivoXls.sheet_by_index(0)
+            archivoXls = xlrd.open_workbook(dirName)
+            hoja1 = archivoXls.sheet_by_index(0)
+            if hoja1.nrows > 0 and hoja1.ncols >0:
+                #cabeceras
+                dniIndex = apellidosIndex = nombreIndex = direccionIndex = fecha_altaIndex = provinciaIndex = forma_pagoIndex = sexoIndex = None
+                for i in range(hoja1.ncols):
+                    cabecera = str(hoja1.cell_value(0,i)).upper()
+                    if cabecera == "DNI": dniIndex = i
+                    elif cabecera == "APELLIDOS": apellidosIndex = i
+                    elif cabecera == "APELIDOS": apellidosIndex = i
+                    elif cabecera == "NOMBRE": nombreIndex = i
+                    elif cabecera == "NOME": nombreIndex = i
+                    elif cabecera == "DIRECCION": direccionIndex = i
+                    elif cabecera == "FECHA_ALTA": fecha_altaIndex = i
+                    elif cabecera == "PROVINCIA": provinciaIndex = i
+                    elif cabecera == "FORMA_PAGO": forma_pagoIndex = i
+                    elif cabecera == "SEXO": sexoIndex = i
+                #campos obligatorios
+                if dniIndex is None or apellidosIndex is None or nombreIndex is None or direccionIndex is None or provinciaIndex is None or sexoIndex is None :
+                    Acciones.ventanaAdvertencia("Faltan campos obligatorios en el archivo")
+                else:
+                    listadoClientesImportar = []
+                    for e in range(1, hoja1.nrows):
+                        dni = str(hoja1.cell_value(e,dniIndex))
+                        apellidos = str(hoja1.cell_value(e,apellidosIndex))
+                        nombre = str(hoja1.cell_value(e,nombreIndex))
+                        direccion = str(hoja1.cell_value(e,direccionIndex))
+                        if fecha_altaIndex is None:
+                            fecha_alta = ""
+                        else:
+                            fecha_alta = str(hoja1.cell_value(e,fecha_altaIndex))
+                        provincia = str(hoja1.cell_value(e,provinciaIndex))
+                        if forma_pagoIndex is None:
+                            forma_pago = ""
+                        else:
+                            forma_pago = str(hoja1.cell_value(e,forma_pagoIndex))
+                        sexo = str(hoja1.cell_value(e,sexoIndex))
+                        clienteImportar = [dni,apellidos,nombre,direccion,fecha_alta,provincia,forma_pago,sexo]
+                        # print(clienteImportar)
+                        listadoClientesImportar.append(clienteImportar)
+                    Acciones.importarListadoClientes(listadoClientesImportar)
+            else:
+                Acciones.ventanaAdvertencia("No hay datos para importar en el archivo")
 
         except Exception as error:
             Acciones.ventanaAdvertencia("No se han podido importar los datos", "error", str(error))

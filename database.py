@@ -35,8 +35,10 @@ class Database():
             q.bindValue(":sexo",  str(cliente[7]))
 
             if q.exec_():
-                acciones.Acciones.ventanaAdvertencia("El cliente se ha guardado con éxito")
+                # acciones.Acciones.ventanaAdvertencia("El cliente se ha guardado con éxito")
+                return True
             else:
+                return False
                 print("Error al guardar cliente: ", q.lastError().text())
 
         def modificarCliente(cliente):
@@ -56,11 +58,13 @@ class Database():
             q.bindValue(":sexo", str(cliente[7]))
 
             if q.exec_():
-                acciones.Acciones.ventanaAdvertencia("El cliente se ha modificado con éxito")
+                # acciones.Acciones.ventanaAdvertencia("El cliente se ha modificado con éxito")
+                return True
             else:
+                return False
                 print("Error al modificar cliente: ", q.lastError().text())
 
-        def cargarCliente(dni):
+        def obtenerCliente(dni):
             q = QtSql.QSqlQuery()
             q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes WHERE dni = :dni")
             q.bindValue(":dni", str(dni))
@@ -68,23 +72,29 @@ class Database():
             if q.exec_():
                 q.next()
                 cliente = [q.value(0), q.value(1), q.value(2), q.value(3), q.value(5), q.value(6), q.value(7),q.value(4)]
-                acciones.Acciones.cargarCliente(cliente)
+                # acciones.Acciones.obtenerCliente(cliente)
+                if cliente[0] is None:
+                    cliente = None
             else:
+                cliente = None
                 print("Error al cargar el cliente: ", q.lastError().text())
+            return cliente
 
         def eliminarCliente(dni):
             q = QtSql.QSqlQuery()
             if acciones.Acciones.isClientecargado():
-                Database.cargarCliente(dni)
+                Database.obtenerCliente(dni)
                 q.prepare(
                     "DELETE FROM clientes "                
                     "WHERE dni = :dni ")
                 q.bindValue(":dni", dni)
 
                 if q.exec_():
-                    acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + " se ha eliminado con éxito")
+                    # acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + " se ha eliminado con éxito")
                     # acciones.Acciones.descargarCliente()
+                    return True
                 else:
+                    return False
                     print("Error al eliminar cliente: ", q.lastError().text())
             else:
                 acciones.Acciones.ventanaAdvertencia("El cliente que se intenta borrar no Existe")
@@ -110,6 +120,18 @@ class Database():
             else:
                 print("Error al cargar provincias: ", q.lastError().text())
 
+        def importarListadoClientes(listadoClientesImportar):
+                clientesNuevos = 0
+                clientesActualizados = 0
+                for cliente in listadoClientesImportar:
+                    if Database.obtenerCliente(cliente[0]) is None:
+                        Database.guardarCliente(cliente)
+                        clientesNuevos += 1
+                    else:
+                        Database.modificarCliente(cliente)
+                        clientesActualizados += 1
+
+                acciones.Acciones.ventanaAdvertencia("Importación completada.\n Clientes nuevos: " + str(clientesNuevos) + "\n clientes actualizados: " + str(clientesActualizados))
 
         def filtrarClientes(filtro):
             q = QtSql.QSqlQuery()
