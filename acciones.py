@@ -1,28 +1,23 @@
 import os.path
 import shutil
 import zipfile
-from pydoc import cli
-
 import xlrd
-
-import clientes
-import datetime
 import sys
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QMessageBox
 
 import database
 import var
+from tools import Tools
 
 
 class Acciones():
 
     def comprobarCampoDni():
         try:
-            dni = clientes.Clientes.formatearDni(var.menu.etDni.text())
+            dni = Tools.formatearDni(var.menu.etDni.text())
             var.menu.etDni.setText(dni)
-            if clientes.Clientes.validarDni(dni):
+            if Tools.validarDni(dni):
                 var.menu.flagDni.setStyleSheet('QLabel {color: green;}')
                 var.menu.flagDni.setText("V")
             else:
@@ -106,7 +101,7 @@ class Acciones():
 
     def addToLog(msg):
         try:
-            var.dLog.ui.etLog.appendPlainText("[" + Acciones.fechaActual("%H:%M:%S %d/%m/%Y") +"] \n   "+ str(msg))
+            var.dLog.ui.etLog.appendPlainText("[" + Tools.fechaActual("%H:%M:%S %d/%m/%Y") +"] \n   "+ str(msg))
         except Exception as error:
             print("Error en el Log" + str(error))
 
@@ -123,25 +118,23 @@ class Acciones():
                                     var.pago,
                                     var.sexo]
 
-                    # print(nuevoCliente)
-
                     clienteBd = database.Database.obtenerCliente(nuevoCliente[0])
                     if clienteBd is not None:
                         Acciones.cargarCliente(clienteBd)
 
                     if not Acciones.isClientecargado():
                         if database.Database.guardarCliente(nuevoCliente) :
-                            Acciones.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
+                            Tools.ventanaAdvertencia("Nuevo cliente grabado con éxito.")
                             Acciones.anunciarStatusBar("Cliente con dni "+ nuevoCliente[0]+ " grabado con éxito")
                         else:
-                            Acciones.ventanaAdvertencia("Error al guardar el cliente.")
+                            Tools.ventanaAdvertencia("Error al guardar el cliente.")
                     else:
-                        if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente",str(nuevoCliente)):
+                        if Tools.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente",str(nuevoCliente)):
                             if database.Database.modificarCliente(nuevoCliente):
-                                Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+                                Tools.ventanaAdvertencia("Cliente modificado con éxito.")
                                 Acciones.anunciarStatusBar("Cliente con dni " + nuevoCliente[0] + " modificado con éxito")
                             else:
-                             Acciones.ventanaAdvertencia("Error al modificar el cliente.")
+                             Tools.ventanaAdvertencia("Error al modificar el cliente.")
                     Acciones.cargarClientes()
                 else:
                     print("Operación no realizada, Faltan datos.")
@@ -167,17 +160,17 @@ class Acciones():
 
                 if Acciones.isClientecargado():
                     if clienteModificado != var.clienteCargado:
-                        if Acciones.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente", str(clienteModificado)):
+                        if Tools.ventanaConfirmacion("Confirma Modificar el Cliente:", "Modificar Cliente", str(clienteModificado)):
                             database.Database.modificarCliente(clienteModificado)
                             Acciones.cargarClientes()
-                            Acciones.ventanaAdvertencia("Cliente modificado con éxito.")
+                            Tools.ventanaAdvertencia("Cliente modificado con éxito.")
                             Acciones.anunciarStatusBar("Cliente con dni " + clienteModificado[0] + " modificado con éxito")
 
                     else:
-                        Acciones.ventanaAdvertencia("No hay cambios")
+                        Tools.ventanaAdvertencia("No hay cambios")
 
                 else:
-                    Acciones.ventanaAdvertencia("No hay clientes seleccionados")
+                    Tools.ventanaAdvertencia("No hay clientes seleccionados")
 
         except Exception as error:
             print("Error al guardar cliente: " + str(error))
@@ -194,7 +187,6 @@ class Acciones():
                     var.menu.tablaDatos.setItem(row, col, celda)
                     col += 1
                 row += 1
-            # Acciones.anunciarStatusBar("Lista de clientes cargada con éxito")
 
     def cargarClientes():
         Acciones.limpiarCamposCliente()
@@ -227,17 +219,17 @@ class Acciones():
         var.menu.tablaDatos.setRowCount(0)
 
     def eliminarCliente():
-        if Acciones.ventanaConfirmacion("Confirma Eliminar el Cliente:","Eliminar Cliente", str(var.clienteCargado)):
+        if Tools.ventanaConfirmacion("Confirma Eliminar el Cliente:","Eliminar Cliente", str(var.clienteCargado)):
             if database.Database.eliminarCliente(var.clienteCargado[0]):
                 Acciones.anunciarStatusBar("Clientes con dni "+var.clienteCargado[0]+ " Eliminado")
             else:
-                Acciones.ventanaAdvertencia("Error al eliminar el cliente con dni: " + var.clienteCargado[0])
+                Tools.ventanaAdvertencia("Error al eliminar el cliente con dni: " + var.clienteCargado[0])
                 database.Database.eliminarCliente(var.clienteCargado[0])
             Acciones.limpiarCamposCliente()
             Acciones.cargarClientes()
 
     def importarListadoClientes(listadoClientesImportar):
-        if Acciones.ventanaConfirmacion("Hay un total de " + str(len(listadoClientesImportar)) + " clientes para importar. Los clientes existentes se actualizarán. \n¿Está seguro?", "Importar Clientes", None, str(listadoClientesImportar)):
+        if Tools.ventanaConfirmacion("Hay un total de " + str(len(listadoClientesImportar)) + " clientes para importar. Los clientes existentes se actualizarán. \n¿Está seguro?", "Importar Clientes", None, str(listadoClientesImportar)):
             database.Database.importarListadoClientes(listadoClientesImportar)
             Acciones.limpiarCamposCliente()
             Acciones.cargarClientes()
@@ -247,7 +239,7 @@ class Acciones():
             rowCliente = var.menu.tablaDatos.selectedIndexes()[0].row()
             Acciones.abrirCliente(var.listadoClientes[rowCliente])
         except IndexError as error:
-            Acciones.ventanaAdvertencia("No hay clientes seleccionados.")
+            Tools.ventanaAdvertencia("No hay clientes seleccionados.")
 
     def eliminarClienteSeleccionado():
         try:
@@ -255,7 +247,7 @@ class Acciones():
             Acciones.cargarCliente(var.listadoClientes[rowCliente])
             Acciones.eliminarCliente()
         except IndexError as error:
-            Acciones.ventanaAdvertencia("No hay clientes seleccionados.")
+            Tools.ventanaAdvertencia("No hay clientes seleccionados.")
 
     def abrirCliente(cliente):
         Acciones.limpiarCamposCliente()
@@ -313,7 +305,7 @@ class Acciones():
         if var.menu.etDni.text() == "":
             errores += "\n  Camplo Vacio: DNI"
             resultado = False
-        elif not clientes.Clientes.validarDni(var.menu.etDni.text()):
+        elif not Tools.validarDni(var.menu.etDni.text()):
             errores += "\n  Dato no válido: DNI"
             resultado = False
 
@@ -343,38 +335,13 @@ class Acciones():
             resultado = False
 
         if not resultado:
-            Acciones.ventanaAdvertencia("Operación no realizada. Faltan datos.\n Debe rellenar todos los campos.", "Error en los camplos", errores)
+            Tools.ventanaAdvertencia("Operación no realizada. Faltan datos.\n Debe rellenar todos los campos.", "Error en los camplos", errores)
 
         return resultado
 
-    def ventanaConfirmacion(mensaje ="", titulo ="Atención", descripcion ="",descripcionExtendida = ""):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setWindowTitle(titulo)
-        msg.setText(mensaje)
-        msg.setInformativeText(descripcion)
-        if descripcionExtendida != "":
-            msg.setDetailedText(descripcionExtendida)
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        if msg.exec_() == QMessageBox.Ok:
-            return True
-        else:
-            return False
-
-
-    def ventanaAdvertencia(mensaje = "", titulo="Atención", descripcion=""):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        # msg.setInformativeText("This is additional information")
-        msg.setWindowTitle(titulo)
-        msg.setText(mensaje)
-        msg.setDetailedText(descripcion)
-        msg.setStandardButtons(QMessageBox.Ok)
-        msg.exec_()
-
     def anunciarStatusBar(msg):
 
-        var.menu.lbStatus.setText("["+ Acciones.fechaActual() + "]"+msg)
+        var.menu.lbStatus.setText("["+ Tools.fechaActual() + "]"+msg)
         Acciones.addToLog(msg)
 
     def abrirCarpeta():
@@ -385,7 +352,7 @@ class Acciones():
 
     def descargarBd():
         try:
-            archivoSalida = str(Acciones.fechaActual('%Y.%m.%d.%H.%M.%S')) + '_backup.zip'
+            archivoSalida = str(Tools.fechaActual('%Y.%m.%d.%H.%M.%S')) + '_backup.zip'
             option = QtWidgets.QFileDialog.Options()
             directorio, archivo = var.dFileOpen.getSaveFileName(None,"Descargar Copia",archivoSalida, '.zip', options=option)
             if var.dFileOpen.Accepted and archivo != '':
@@ -402,7 +369,7 @@ class Acciones():
         try:
             dirName, fileName = var.dFileOpen.getOpenFileName(None,None,None,"*.zip *.ZIP",)
 
-            if dirName and Acciones.ventanaConfirmacion("Estas seguro de restaurar la BD","¡Atención!",None,dirName):
+            if dirName and Tools.ventanaConfirmacion("Estas seguro de restaurar la BD","¡Atención!",None,dirName):
                 archivoZip = zipfile.ZipFile(dirName, 'r')
 
                 database.Database.disconnect()  #desconectamos para poder renombrar la base de datos actual
@@ -412,28 +379,28 @@ class Acciones():
                     archivoZip.extract(var.fileDb) #extraemos la base de datos del archivo zip.
                     Acciones.anunciarStatusBar("Base de datos restaurada")
                     Acciones.cargarListaClientes()
-                    Acciones.ventanaAdvertencia("Base de datos restaurada con éxito.")
+                    Tools.ventanaAdvertencia("Base de datos restaurada con éxito.")
                 except Exception as error: #si da error, deshacemos el cambio.
                     os.replace(var.fileDb + "_last", var.fileDb)  # le cambiamos el nombre y la dejamos como copia de seguridad
-                    Acciones.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
+                    Tools.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
 
                 database.Database.connect() #conectamos de nuevo la bd.
                 Acciones.cargarClientes()
 
 
         except Exception as error:
-            Acciones.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
+            Tools.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
 
     def borrarBd():
-        if Acciones.ventanaConfirmacion("¿Estas seguro de Borrar toda la Base De Datos?", "¡Atención!"):
+        if Tools.ventanaConfirmacion("¿Estas seguro de Borrar toda la Base De Datos?", "¡Atención!"):
 
             try:
                 database.Database.disconnect()
                 os.remove(var.fileDb)
-                Acciones.ventanaAdvertencia("Base de datos BORRADA")
+                Tools.ventanaAdvertencia("Base de datos BORRADA")
                 Acciones.anunciarStatusBar("Base de datos eliminada")
             except Exception as error:
-                Acciones.ventanaAdvertencia("Error al Borrar la Base de datos", "error", str(error))
+                Tools.ventanaAdvertencia("Error al Borrar la Base de datos", "error", str(error))
 
             database.Database.connect()  # conectamos de nuevo la bd
             Acciones.cargarClientes()
@@ -460,7 +427,7 @@ class Acciones():
                     elif cabecera == "SEXO": sexoIndex = i
                 #campos obligatorios
                 if dniIndex is None or apellidosIndex is None or nombreIndex is None or direccionIndex is None or provinciaIndex is None or sexoIndex is None :
-                    Acciones.ventanaAdvertencia("Faltan campos obligatorios en el archivo")
+                    Tools.ventanaAdvertencia("Faltan campos obligatorios en el archivo")
                 else:
                     listadoClientesImportar = []
                     for e in range(1, hoja1.nrows):
@@ -482,13 +449,10 @@ class Acciones():
                         # print(clienteImportar)
                         listadoClientesImportar.append(clienteImportar)
                     Acciones.importarListadoClientes(listadoClientesImportar)
+
             else:
-                Acciones.ventanaAdvertencia("No hay datos para importar en el archivo")
+                Tools.ventanaAdvertencia("No hay datos para importar en el archivo")
 
         except Exception as error:
-            Acciones.ventanaAdvertencia("No se han podido importar los datos", "error", str(error))
+            Tools.ventanaAdvertencia("No se han podido importar los datos", "error", str(error))
 
-    def fechaActual(format= "%d/%m/%Y"):
-        fecha = datetime.datetime.today()
-        fecha = fecha.strftime(format)
-        return str(fecha)

@@ -2,6 +2,9 @@ from PyQt5 import QtWidgets, QtSql
 
 import acciones
 import var
+from tools import Tools
+
+
 class Database():
         def connect():
             var.db = QtSql.QSqlDatabase.addDatabase("QSQLITE")
@@ -35,7 +38,6 @@ class Database():
             q.bindValue(":sexo",  str(cliente[7]))
 
             if q.exec_():
-                # acciones.Acciones.ventanaAdvertencia("El cliente se ha guardado con éxito")
                 return True
             else:
                 return False
@@ -58,7 +60,6 @@ class Database():
             q.bindValue(":sexo", str(cliente[7]))
 
             if q.exec_():
-                # acciones.Acciones.ventanaAdvertencia("El cliente se ha modificado con éxito")
                 return True
             else:
                 return False
@@ -90,14 +91,12 @@ class Database():
                 q.bindValue(":dni", dni)
 
                 if q.exec_():
-                    # acciones.Acciones.ventanaAdvertencia("El cliente con dni: " +dni + " se ha eliminado con éxito")
-                    # acciones.Acciones.descargarCliente()
                     return True
                 else:
                     return False
                     print("Error al eliminar cliente: ", q.lastError().text())
             else:
-                acciones.Acciones.ventanaAdvertencia("El cliente que se intenta borrar no Existe")
+                Tools.ventanaAdvertencia("El cliente que se intenta borrar no Existe")
 
         def cargarClientes():
             q = QtSql.QSqlQuery()
@@ -125,13 +124,17 @@ class Database():
                 clientesActualizados = 0
                 for cliente in listadoClientesImportar:
                     if Database.obtenerCliente(cliente[0]) is None:
+                        if cliente[4] == "":
+                            cliente[4] = Tools.fechaActual()
                         Database.guardarCliente(cliente)
                         clientesNuevos += 1
                     else:
                         Database.modificarCliente(cliente)
                         clientesActualizados += 1
 
-                acciones.Acciones.ventanaAdvertencia("Importación completada.\n Clientes nuevos: " + str(clientesNuevos) + "\n clientes actualizados: " + str(clientesActualizados))
+                Tools.ventanaAdvertencia("Importación completada.\n Clientes nuevos: " + str(clientesNuevos) + "\n clientes actualizados: " + str(clientesActualizados))
+
+                acciones.Acciones.anunciarStatusBar("Importados " + str(len(listadoClientesImportar)) + " clientes")
 
         def filtrarClientes(filtro):
             q = QtSql.QSqlQuery()
