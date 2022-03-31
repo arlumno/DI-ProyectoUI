@@ -252,7 +252,6 @@ class Acciones():
     def abrirCliente(cliente):
         Acciones.limpiarCamposCliente()
         Acciones.cargarCliente(cliente)
-
         var.menu.etDni.setText(cliente[0])
         Acciones.comprobarCampoDni()
         var.menu.etApellido.setText(cliente[1])
@@ -340,8 +339,7 @@ class Acciones():
         return resultado
 
     def anunciarStatusBar(msg):
-
-        var.menu.lbStatus.setText("["+ Tools.fechaActual() + "]"+msg)
+        var.menu.lbStatus.setText("["+ Tools.fechaActual() + "] "+msg)
         Acciones.addToLog(msg)
 
     def abrirCarpeta():
