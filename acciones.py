@@ -59,7 +59,6 @@ class Acciones():
             if var.menu.chkTransfer.isChecked():
                 var.pago += 'Transferencia '
             msg = msg + var.pago
-            Acciones.addToLog(msg) #TODO cambiar a otros lados
 
         except Exception as error:
             print("Error al seleccionar el pago: " + str(error))
@@ -67,6 +66,7 @@ class Acciones():
     def cargarProvincias():
         try:
             # provincias = ['','Pontevedra','Ourense','Lugo','A Coruña']
+            # He cargado una tabla de provincias en la base de datos.
             database.Database.cargarProvincias()
 
             for i in var.listadoProvincias:
@@ -79,6 +79,11 @@ class Acciones():
         provincia = prov
         # print('Provincia seleccionada: ' + prov)
 
+    def cargarEnvios():
+        var.listadoEnvios = ['Recogida por cliente',
+                              'Envío nacional paquetería exprés urgente',
+                              'Envío nacional paquetería normal',
+                              'Envío internacional']
     def abrirCalendar():
         try:
             var.dCalendar.show()
@@ -116,7 +121,8 @@ class Acciones():
                                     var.menu.etFechaAlta.text(),
                                     var.menu.cbProvincia.currentText(),
                                     var.pago,
-                                    var.sexo]
+                                    var.sexo,
+                                    var.menu.sbEnvio.value()]
 
                     clienteBd = database.Database.obtenerCliente(nuevoCliente[0])
                     if clienteBd is not None:
@@ -146,13 +152,14 @@ class Acciones():
         try:
             if Acciones.validarCampos():
                 clienteModificado = [var.menu.etDni.text(),
-                                var.menu.etApellido.text(),
-                                var.menu.etNombre.text(),
-                                var.menu.etDireccion.text(),
-                                var.menu.cbProvincia.currentText(),
-                                var.pago,
-                                var.sexo,
-                                var.menu.etFechaAlta.text()]
+                                    var.menu.etApellido.text(),
+                                    var.menu.etNombre.text(),
+                                    var.menu.etDireccion.text(),
+                                    var.menu.etFechaAlta.text(),
+                                    var.menu.cbProvincia.currentText(),
+                                    var.pago,
+                                    var.sexo,
+                                    var.menu.sbEnvio.value()]
 
                 clienteBd = database.Database.obtenerCliente(clienteModificado[0])
                 if clienteBd is not None:
@@ -260,6 +267,9 @@ class Acciones():
         var.menu.etFechaAlta.setText(cliente[7])
         var.menu.cbProvincia.setCurrentText(cliente[4])
 
+        if cliente[8] != "":
+            var.menu.sbEnvio.setValue(cliente[8])
+
         var.sexo = cliente[6]
         if cliente[6] == "Hombre":
             var.menu.rbMasculino.setChecked(True)
@@ -286,6 +296,8 @@ class Acciones():
         var.menu.etFechaAlta.setText("")
         var.menu.flagDni.setText("")
         var.menu.cbProvincia.setCurrentText("")
+        var.menu.sbEnvio.setValue(0)
+        var.menu.etEnvio.setText(var.listadoEnvios[0])
 
         var.menu.rbgSexo.setExclusive(False)
         var.menu.rbMasculino.setChecked(False)
@@ -316,9 +328,11 @@ class Acciones():
             errores += "\n  Camplo Vacio: Apellidos"
             resultado = False
 
-        if var.menu.etDireccion.text() == "":
-            errores += "\n  Camplo Vacio: Direccion"
-            resultado = False
+        #opcional
+        #opcional
+        # if var.menu.etDireccion.text() == "":
+        #     errores += "\n  Camplo Vacio: Direccion"
+        #     resultado = False
 
         # if var.menu.etFechaAlta.text() == "":
         #     print("Campo incompleto (Fecha de Alta) - Optativo")
@@ -389,18 +403,22 @@ class Acciones():
         except Exception as error:
             Tools.ventanaAdvertencia("No se ha podido restaurar la Base de datos","error",str(error))
 
-    def borrarBd():
-        if Tools.ventanaConfirmacion("¿Estas seguro de Borrar toda la Base De Datos?", "¡Atención!"):
-
-            try:
-                database.Database.disconnect()
-                os.remove(var.fileDb)
-                Tools.ventanaAdvertencia("Base de datos BORRADA")
-                Acciones.anunciarStatusBar("Base de datos eliminada")
-            except Exception as error:
-                Tools.ventanaAdvertencia("Error al Borrar la Base de datos", "error", str(error))
-
-            database.Database.connect()  # conectamos de nuevo la bd
+    def borrarClientesBd():
+        if Tools.ventanaConfirmacion("¿Estas seguro de Borrar todos los clientes la Base De Datos?", "¡Atención!"):
+            ## esto borra el archivo de BD. incluida la tabla de Provincias....
+            # try:
+            #     database.Database.disconnect()
+            #     os.remove(var.fileDb)
+            #     Tools.ventanaAdvertencia("Base de datos BORRADA")
+            #     Acciones.anunciarStatusBar("Base de datos eliminada")
+            # except Exception as error:
+            #     Tools.ventanaAdvertencia("Error al Borrar la Base de datos", "error", str(error))
+            # database.Database.connect()  # conectamos de nuevo la bd
+            if database.Database.borrarClientes():
+                Tools.ventanaAdvertencia("Se han eliminado todos los registros de clientes.")
+                Acciones.anunciarStatusBar("Eliminados todos los clientes")
+            else:
+                Tools.ventanaAdvertencia("Error al eliminar registros")
             Acciones.cargarClientes()
 
     def importarDatos():
@@ -443,7 +461,7 @@ class Acciones():
                         else:
                             forma_pago = str(hoja1.cell_value(e,forma_pagoIndex))
                         sexo = str(hoja1.cell_value(e,sexoIndex))
-                        clienteImportar = [dni,apellidos,nombre,direccion,fecha_alta,provincia,forma_pago,sexo]
+                        clienteImportar = [dni,apellidos,nombre,direccion,fecha_alta,provincia,forma_pago,sexo,None]
                         # print(clienteImportar)
                         listadoClientesImportar.append(clienteImportar)
                     Acciones.importarListadoClientes(listadoClientesImportar)
@@ -454,3 +472,7 @@ class Acciones():
         except Exception as error:
             Tools.ventanaAdvertencia("No se han podido importar los datos", "error", str(error))
 
+    def asignarEnvio():
+        # print(var.menu.sbEnvio.value())
+        # print("cosas")
+        var.menu.etEnvio.setText(var.listadoEnvios[var.menu.sbEnvio.value()])

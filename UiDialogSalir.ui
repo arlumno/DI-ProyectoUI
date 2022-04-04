@@ -42,7 +42,7 @@
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap>alert-icon-1563.jpg</pixmap>
+    <pixmap resource="iconos.qrc">:/iconos/recursos/alert-icon-1563.jpg</pixmap>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -64,7 +64,9 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="iconos.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonBox</sender>

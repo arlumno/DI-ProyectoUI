@@ -10,10 +10,13 @@ global clienteCargado
 global pago
 global sexo
 global db
+global listadoEnvios
+
 db = None
 pago = ""
 sexo = ""
 clienteCargado = [str]
 listadoClientes = []
 listadoProvincias = []
+listadoEnvios = []
 fileDb = "clientes.db"

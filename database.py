@@ -25,8 +25,8 @@ class Database():
         def guardarCliente(cliente):
             q = QtSql.QSqlQuery()
 
-            q.prepare("INSERT INTO clientes (dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo)  "
-                                "VALUES ( :dni, :apellidos, :nombre, :direccion, :fecha_alta, :provincia, :pago, :sexo)")
+            q.prepare("INSERT INTO clientes (dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo, envio)  "
+                                "VALUES ( :dni, :apellidos, :nombre, :direccion, :fecha_alta, :provincia, :pago, :sexo, :envio)")
 
             q.bindValue(":dni", str(cliente[0]))
             q.bindValue(":apellidos",  str(cliente[1]))
@@ -36,18 +36,20 @@ class Database():
             q.bindValue(":provincia", str(cliente[5]))
             q.bindValue(":pago", str(cliente[6]))
             q.bindValue(":sexo",  str(cliente[7]))
+            q.bindValue(":envio",  str(cliente[8]))
 
             if q.exec_():
                 return True
             else:
-                return False
                 print("Error al guardar cliente: ", q.lastError().text())
+                return False
 
         def modificarCliente(cliente):
             q = QtSql.QSqlQuery()
+            print(cliente)
             q.prepare(
                 "UPDATE clientes "
-                "SET apellidos = :apellidos,  nombre = :nombre, direccion = :direccion, provincia = :provincia, fecha_alta = :fecha_alta, forma_pago = :pago, sexo = :sexo "
+                "SET apellidos = :apellidos,  nombre = :nombre, direccion = :direccion, provincia = :provincia, fecha_alta = :fecha_alta, forma_pago = :pago, sexo = :sexo, envio = :envio "
                 "WHERE dni = :dni ")
 
             q.bindValue(":dni", str(cliente[0]))
@@ -58,21 +60,22 @@ class Database():
             q.bindValue(":provincia", str(cliente[5]))
             q.bindValue(":pago", str(cliente[6]))
             q.bindValue(":sexo", str(cliente[7]))
+            q.bindValue(":envio", str(cliente[8]))
 
             if q.exec_():
                 return True
             else:
-                return False
                 print("Error al modificar cliente: ", q.lastError().text())
+                return False
 
         def obtenerCliente(dni):
             q = QtSql.QSqlQuery()
-            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes WHERE dni = :dni")
+            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo, envio FROM clientes WHERE dni = :dni")
             q.bindValue(":dni", str(dni))
 
             if q.exec_():
                 q.next()
-                cliente = [q.value(0), q.value(1), q.value(2), q.value(3), q.value(5), q.value(6), q.value(7),q.value(4)]
+                cliente = [q.value(0), q.value(1), q.value(2), q.value(3), q.value(5), q.value(6), q.value(7),q.value(4),q.value(8)]
                 # acciones.Acciones.obtenerCliente(cliente)
                 if cliente[0] is None:
                     cliente = None
@@ -100,11 +103,11 @@ class Database():
 
         def cargarClientes():
             q = QtSql.QSqlQuery()
-            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes")
+            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo, envio FROM clientes")
             var.listadoClientes = []
             if q.exec_():
                 while q.next():
-                    var.listadoClientes.append([q.value(0),q.value(1),q.value(2),q.value(3),q.value(5),q.value(6),q.value(7),q.value(4)])
+                    var.listadoClientes.append([q.value(0),q.value(1),q.value(2),q.value(3),q.value(5),q.value(6),q.value(7),q.value(4),q.value(8)])
 
             else:
                 print("Error al cargar clientes: ", q.lastError().text())
@@ -140,13 +143,23 @@ class Database():
             q = QtSql.QSqlQuery()
 
             # q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes WHERE nombre = :filtro")
-            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo FROM clientes WHERE nombre LIKE :filtro or apellidos LIKE :filtro")
+            q.prepare("SELECT dni, apellidos, nombre, direccion, fecha_alta, provincia, forma_pago, sexo, envio FROM clientes WHERE nombre LIKE :filtro or apellidos LIKE :filtro")
 
             q.bindValue(":filtro", "%"+str(filtro) + "%")
 
             var.listadoClientes = []
             if q.exec_():
                 while q.next():
-                    var.listadoClientes.append([q.value(0),q.value(1),q.value(2),q.value(3),q.value(5),q.value(6),q.value(7),q.value(4)])
+                    var.listadoClientes.append([q.value(0),q.value(1),q.value(2),q.value(3),q.value(5),q.value(6),q.value(7),q.value(4),q.value(8)])
             else:
                 print("Error al cargar clientes: ", q.lastError().text())
+
+        def borrarClientes():
+            q = QtSql.QSqlQuery()
+            q.prepare('DELETE FROM clientes')
+            if q.exec_():
+                return True
+            else:
+                print("Error al cargar clientes: ", q.lastError().text())
+                return False
+

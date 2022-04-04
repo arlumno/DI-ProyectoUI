@@ -27,11 +27,18 @@ class Main(QtWidgets.QMainWindow):
         database.Database.connect()
 
         acciones.Acciones.cargarProvincias()
+        acciones.Acciones.cargarEnvios()
+
         acciones.Acciones.cargarClientes()
+
         acciones.Acciones.limpiarCamposCliente()
         var.menu.statusbar.addPermanentWidget(var.menu.lbStatus,1)
         acciones.Acciones.anunciarStatusBar("Bienvenido a 2º DAM - Adultos")
 
+        var.menu.sbEnvio.setMinimum(0)
+        var.menu.sbEnvio.setMaximum(len(var.listadoEnvios) - 1)
+        # var.menu.sbEnvio.setValue(0)
+        # var.menu.etEnvio.setText(var.listaEnvio[0])
         # acciones.Acciones.addToLog("prueba de texto 1")
         # acciones.Acciones.addToLog("prueba de texto 2")
 
@@ -53,8 +60,8 @@ class Main(QtWidgets.QMainWindow):
         var.menu.bGuardarCambios.clicked.connect(acciones.Acciones.guardarCambiosCliente)
         var.menu.bNuevoCliente.clicked.connect(acciones.Acciones.grabarNuevoCliente)
         var.menu.bLimpiarCampos.clicked.connect(acciones.Acciones.limpiarCamposCliente)
-
         var.menu.etDni.editingFinished.connect(acciones.Acciones.comprobarCampoDni)
+        var.menu.sbEnvio.valueChanged.connect(acciones.Acciones.asignarEnvio)
 
 
 
@@ -64,7 +71,7 @@ class Main(QtWidgets.QMainWindow):
         var.menu.actionAbrirCarpeta.triggered.connect(acciones.Acciones.abrirCarpeta)
         var.menu.actionDescargarBd.triggered.connect(acciones.Acciones.descargarBd)
         var.menu.actionRestaurarBD.triggered.connect(acciones.Acciones.restaurarBd)
-        var.menu.actionBorrarBD.triggered.connect(acciones.Acciones.borrarBd)
+        var.menu.actionBorrarBD.triggered.connect(acciones.Acciones.borrarClientesBd)
         var.menu.actionImportar_Datos.triggered.connect(acciones.Acciones.importarDatos)
 
         #radiobuttons y checkboxs

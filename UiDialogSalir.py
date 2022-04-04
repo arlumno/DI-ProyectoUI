@@ -23,7 +23,7 @@ class Ui_DialogSalir(object):
         self.label = QtWidgets.QLabel(DialogSalir)
         self.label.setGeometry(QtCore.QRect(60, 30, 119, 104))
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("alert-icon-1563.jpg"))
+        self.label.setPixmap(QtGui.QPixmap(":/iconos/recursos/alert-icon-1563.jpg"))
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(DialogSalir)
         self.label_2.setGeometry(QtCore.QRect(60, 140, 131, 31))
@@ -41,3 +41,4 @@ class Ui_DialogSalir(object):
         _translate = QtCore.QCoreApplication.translate
         DialogSalir.setWindowTitle(_translate("DialogSalir", "Salir"))
         self.label_2.setText(_translate("DialogSalir", "¿Desea salir?"))
+import iconos_rc

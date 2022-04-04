@@ -1,15 +1,19 @@
 <RCC>
   <qresource prefix="iconos">
-    <file>download.png</file>
-    <file>folder.png</file>
-    <file>alert-icon-1563.jpg</file>
-    <file>calendar.png</file>
-    <file>clean.png</file>
-    <file>clear.png</file>
-    <file>exit.png</file>
-    <file>log.png</file>
-    <file>read.png</file>
-    <file>reload.png</file>
-    <file>search.png</file>
+    <file>recursos/Download Database.png</file>
+    <file>recursos/Misc_Upload_Database_Icon_256.png</file>
+    <file>recursos/New Database.png</file>
+    <file>recursos/Remove_from_database_Icon_256.png</file>
+    <file>recursos/alert-icon-1563.jpg</file>
+    <file>recursos/calendar.png</file>
+    <file>recursos/clean.png</file>
+    <file>recursos/clear.png</file>
+    <file>recursos/download.png</file>
+    <file>recursos/exit.png</file>
+    <file>recursos/folder.png</file>
+    <file>recursos/log.png</file>
+    <file>recursos/read.png</file>
+    <file>recursos/reload.png</file>
+    <file>recursos/search.png</file>
   </qresource>
 </RCC>

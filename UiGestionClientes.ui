@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>900</width>
-    <height>700</height>
+    <height>730</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>900</width>
-    <height>700</height>
+    <height>730</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>900</width>
-    <height>700</height>
+    <height>730</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -60,9 +60,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>306</x>
-        <y>149</y>
-        <width>153</width>
+        <x>69</x>
+        <y>151</y>
+        <width>141</width>
         <height>31</height>
        </rect>
       </property>
@@ -125,7 +125,7 @@
       <property name="geometry">
        <rect>
         <x>760</x>
-        <y>573</y>
+        <y>570</y>
         <width>80</width>
         <height>31</height>
        </rect>
@@ -137,7 +137,7 @@
      <widget class="QLabel" name="label_5">
       <property name="geometry">
        <rect>
-        <x>240</x>
+        <x>30</x>
         <y>160</y>
         <width>40</width>
         <height>13</height>
@@ -207,9 +207,9 @@
      <widget class="QLabel" name="label_6">
       <property name="geometry">
        <rect>
-        <x>479</x>
+        <x>546</x>
         <y>158</y>
-        <width>104</width>
+        <width>91</width>
         <height>16</height>
        </rect>
       </property>
@@ -220,7 +220,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Metodos de Pago:</string>
+       <string>Metodos Pago:</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="etNombre">
@@ -246,9 +246,9 @@
      <widget class="QWidget" name="horizontalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>592</x>
+        <x>633</x>
         <y>151</y>
-        <width>244</width>
+        <width>221</width>
         <height>31</height>
        </rect>
       </property>
@@ -290,7 +290,7 @@
       <property name="geometry">
        <rect>
         <x>670</x>
-        <y>573</y>
+        <y>570</y>
         <width>81</width>
         <height>31</height>
        </rect>
@@ -370,8 +370,8 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>calendar.png</normaloff>calendar.png</iconset>
+       <iconset resource="iconos.qrc">
+        <normaloff>:/iconos/recursos/calendar.png</normaloff>:/iconos/recursos/calendar.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -407,7 +407,7 @@
       <property name="geometry">
        <rect>
         <x>240</x>
-        <y>10</y>
+        <y>6</y>
         <width>361</width>
         <height>51</height>
        </rect>
@@ -451,9 +451,9 @@
      <widget class="QTableWidget" name="tablaDatos">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>290</y>
-        <width>841</width>
+        <width>851</width>
         <height>271</height>
        </rect>
       </property>
@@ -521,7 +521,7 @@
       </property>
       <property name="icon">
        <iconset resource="iconos.qrc">
-        <normaloff>:/iconos/search.png</normaloff>:/iconos/search.png</iconset>
+        <normaloff>:/iconos/recursos/search.png</normaloff>:/iconos/recursos/search.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -560,7 +560,7 @@
       </property>
       <property name="icon">
        <iconset resource="iconos.qrc">
-        <normaloff>:/iconos/reload.png</normaloff>:/iconos/reload.png</iconset>
+        <normaloff>:/iconos/recursos/reload.png</normaloff>:/iconos/recursos/reload.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -638,7 +638,7 @@ font-weight: bold</string>
       </property>
       <property name="icon">
        <iconset resource="iconos.qrc">
-        <normaloff>:/iconos/clean.png</normaloff>:/iconos/clean.png</iconset>
+        <normaloff>:/iconos/recursos/clean.png</normaloff>:/iconos/recursos/clean.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -683,7 +683,7 @@ font-weight: bold</string>
       </property>
       <property name="icon">
        <iconset resource="iconos.qrc">
-        <normaloff>:/iconos/clean.png</normaloff>:/iconos/clean.png</iconset>
+        <normaloff>:/iconos/recursos/clean.png</normaloff>:/iconos/recursos/clean.png</iconset>
       </property>
       <property name="iconSize">
        <size>
@@ -745,12 +745,12 @@ font-weight: bold</string>
        <string>Guardar Cambios</string>
       </property>
      </widget>
-     <widget class="QSpinBox" name="sbEdad">
+     <widget class="QSpinBox" name="sbEnvio">
       <property name="geometry">
        <rect>
-        <x>71</x>
+        <x>264</x>
         <y>155</y>
-        <width>51</width>
+        <width>31</width>
         <height>22</height>
        </rect>
       </property>
@@ -758,9 +758,9 @@ font-weight: bold</string>
      <widget class="QLabel" name="label_12">
       <property name="geometry">
        <rect>
-        <x>30</x>
+        <x>227</x>
         <y>158</y>
-        <width>61</width>
+        <width>41</width>
         <height>16</height>
        </rect>
       </property>
@@ -771,7 +771,26 @@ font-weight: bold</string>
        </font>
       </property>
       <property name="text">
-       <string>Edad:</string>
+       <string>Envío:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="etEnvio">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>155</y>
+        <width>221</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
       </property>
      </widget>
     </widget>
@@ -851,7 +870,7 @@ font-weight: bold</string>
   <action name="actionSalir">
    <property name="icon">
     <iconset resource="iconos.qrc">
-     <normaloff>:/iconos/exit.png</normaloff>:/iconos/exit.png</iconset>
+     <normaloff>:/iconos/recursos/exit.png</normaloff>:/iconos/recursos/exit.png</iconset>
    </property>
    <property name="text">
     <string>Salir</string>
@@ -866,7 +885,7 @@ font-weight: bold</string>
   <action name="actionLog">
    <property name="icon">
     <iconset resource="iconos.qrc">
-     <normaloff>:/iconos/log.png</normaloff>:/iconos/log.png</iconset>
+     <normaloff>:/iconos/recursos/log.png</normaloff>:/iconos/recursos/log.png</iconset>
    </property>
    <property name="text">
     <string>Ver Log</string>
@@ -878,7 +897,7 @@ font-weight: bold</string>
   <action name="actionAbrirCarpeta">
    <property name="icon">
     <iconset resource="iconos.qrc">
-     <normaloff>:/iconos/folder.png</normaloff>:/iconos/folder.png</iconset>
+     <normaloff>:/iconos/recursos/folder.png</normaloff>:/iconos/recursos/folder.png</iconset>
    </property>
    <property name="text">
     <string>Abrir</string>
@@ -890,7 +909,7 @@ font-weight: bold</string>
   <action name="actionDescargarBd">
    <property name="icon">
     <iconset resource="iconos.qrc">
-     <normaloff>:/iconos/download.png</normaloff>:/iconos/download.png</iconset>
+     <normaloff>:/iconos/recursos/Download Database.png</normaloff>:/iconos/recursos/Download Database.png</iconset>
    </property>
    <property name="text">
     <string>Descargar Bd</string>
@@ -900,11 +919,19 @@ font-weight: bold</string>
    </property>
   </action>
   <action name="actionImportar_Datos">
+   <property name="icon">
+    <iconset>
+     <normaloff>recursos/New Database.png</normaloff>recursos/New Database.png</iconset>
+   </property>
    <property name="text">
     <string>Importar Datos</string>
    </property>
   </action>
   <action name="actionRestaurarBD">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/iconos/recursos/Misc_Upload_Database_Icon_256.png</normaloff>:/iconos/recursos/Misc_Upload_Database_Icon_256.png</iconset>
+   </property>
    <property name="text">
     <string>Restaurar BD</string>
    </property>
@@ -913,8 +940,12 @@ font-weight: bold</string>
    </property>
   </action>
   <action name="actionBorrarBD">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/iconos/recursos/Remove_from_database_Icon_256.png</normaloff>:/iconos/recursos/Remove_from_database_Icon_256.png</iconset>
+   </property>
    <property name="text">
-    <string>Borrar BD</string>
+    <string>Borrar Clientes BD</string>
    </property>
   </action>
  </widget>
