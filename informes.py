@@ -13,7 +13,8 @@ class Informes():
         var.configReport = {"rutaArchivoPdf" :'informes/listadoclientes.pdf',
                             "tituloInforme": "Listado de Clientes",
                             "autorInforme": "Armando Castro",
-                            "logoEmpresa": ".\\recursos\logo_ies_teis.jpg",
+                            # "logoEmpresa": ".\\recursos\logo_ies_teis.jpg",
+                            "logoEmpresa": "recursos/logo_ies_teis.jpg",
                             "cifEmpresa": "A-12345678",
                             "nombreEmpresa": "Ies de Teis s.l.",
                             "direccionEmpresa": "Avenida Galicia, 101 - 36216 Vigo (Pontevedra)",
@@ -93,7 +94,7 @@ class Informes():
             var.report.setFont("Helvetica", size=7)
             var.report.drawString(460,40, fecha)
             var.report.drawString(275,40, str('Página %s' % var.report.getPageNumber()))
-            var.report.drawString(50,40, var.configReport['tituloInforme'])
+            var.report.drawString(50,40, var.configReport['tituloInforme'] + "  Autor: " + var.configReport['autorInforme'])
 
         except Exception as error:
             print('Error reporcli footer %s ' % str(error))
