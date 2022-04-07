@@ -45,6 +45,7 @@ class Main(QtWidgets.QMainWindow):
         # var.menu.tablaDatos.selectionModel().selectionChanged.connect(acciones.Acciones.modificarCliente)
         var.menu.tablaDatos.doubleClicked.connect(acciones.Acciones.abrirClienteSeleccionado)
         # print(var.menu.tablaDatos.selectedIndexes())
+
         #Botones
         var.menu.bSalir.clicked.connect(acciones.Acciones.salir)
         var.menu.bCargarClientes.clicked.connect(acciones.Acciones.cargarClientes)
