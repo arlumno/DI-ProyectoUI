@@ -62,7 +62,7 @@
        <rect>
         <x>69</x>
         <y>151</y>
-        <width>141</width>
+        <width>146</width>
         <height>31</height>
        </rect>
       </property>
@@ -248,7 +248,7 @@
        <rect>
         <x>633</x>
         <y>151</y>
-        <width>221</width>
+        <width>223</width>
         <height>31</height>
        </rect>
       </property>
@@ -848,8 +848,15 @@ font-weight: bold</string>
     <addaction name="separator"/>
     <addaction name="actionBorrarBD"/>
    </widget>
+   <widget class="QMenu" name="menuInformes">
+    <property name="title">
+     <string>Informes</string>
+    </property>
+    <addaction name="actionGenerarInformeClientes"/>
+   </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuHerramientas"/>
+   <addaction name="menuInformes"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -866,6 +873,7 @@ font-weight: bold</string>
    <addaction name="actionSalir"/>
    <addaction name="actionLog"/>
    <addaction name="actionDescargarBd"/>
+   <addaction name="actionGenerarInformeClientes"/>
   </widget>
   <action name="actionSalir">
    <property name="icon">
@@ -946,6 +954,15 @@ font-weight: bold</string>
    </property>
    <property name="text">
     <string>Borrar Clientes BD</string>
+   </property>
+  </action>
+  <action name="actionGenerarInformeClientes">
+   <property name="icon">
+    <iconset resource="iconos.qrc">
+     <normaloff>:/iconos/recursos/read.png</normaloff>:/iconos/recursos/read.png</iconset>
+   </property>
+   <property name="text">
+    <string>Generar Informe Clientes</string>
    </property>
   </action>
  </widget>

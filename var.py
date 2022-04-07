@@ -11,7 +11,8 @@ global pago
 global sexo
 global db
 global listadoEnvios
-
+global report
+global configReport
 db = None
 pago = ""
 sexo = ""

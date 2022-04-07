@@ -267,8 +267,8 @@ class Acciones():
         var.menu.etFechaAlta.setText(cliente[7])
         var.menu.cbProvincia.setCurrentText(cliente[4])
 
-        if cliente[8] != "":
-            var.menu.sbEnvio.setValue(cliente[8])
+        if cliente[8] is not None and cliente[8] != "" and cliente[8] != "None":
+           var.menu.sbEnvio.setValue(int(cliente[8]))
 
         var.sexo = cliente[6]
         if cliente[6] == "Hombre":

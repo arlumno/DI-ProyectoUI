@@ -5,11 +5,10 @@ from UiDialogSalir import *
 from UiGestionClientes import *
 from UiDialogLog import *
 from UiDialogCalendar import *
-from UiDialogCalendar import *
 import acciones, database
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
-
+import informes
 
 
 class Main(QtWidgets.QMainWindow):
@@ -73,6 +72,7 @@ class Main(QtWidgets.QMainWindow):
         var.menu.actionRestaurarBD.triggered.connect(acciones.Acciones.restaurarBd)
         var.menu.actionBorrarBD.triggered.connect(acciones.Acciones.borrarClientesBd)
         var.menu.actionImportar_Datos.triggered.connect(acciones.Acciones.importarDatos)
+        var.menu.actionGenerarInformeClientes.triggered.connect(informes.Informes.reportCli)
 
         #radiobuttons y checkboxs
         var.menu.rbgSexo.buttonClicked.connect(acciones.Acciones.selSexo)
